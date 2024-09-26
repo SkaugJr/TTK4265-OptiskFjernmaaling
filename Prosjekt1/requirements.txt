@@ -1,0 +1,8 @@
+numpy
+matplotlib
+pandas
+Pillow
+os
+glob2
+ipywidgets
+scipy
