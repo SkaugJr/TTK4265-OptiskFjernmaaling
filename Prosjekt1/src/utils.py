@@ -29,3 +29,30 @@ def calculate_average_image(file_paths, output_path, width, height):
     image_data = average_image
     
     np.savetxt(output_path, image_data, delimiter=',', fmt='%d')
+
+
+def find_consecutive_range_means(arr):
+    """
+    Finds the mean of consecutive ranges in an array of integers.
+
+    Parameters:
+    - arr: numpy array of integers.
+
+    Returns:
+    - means: list of floats, each representing the mean of a consecutive range.
+    """
+    means = []
+    start = arr[0]
+    current_range = [start]
+    
+    for i in range(1, len(arr)):
+        if arr[i] != arr[i-1] + 1:
+            means.append(np.mean(current_range))
+            current_range = [arr[i]]
+        else:
+            current_range.append(arr[i])
+    
+    # Append the mean of the last range
+    means.append(np.mean(current_range))
+    
+    return means

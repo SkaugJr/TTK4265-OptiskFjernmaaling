@@ -2,8 +2,11 @@ import os
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.ndimage import median_filter
+from scipy.ndimage import mean_filter
 
-def get_expected_noise(exposure):
+from src import *
+
+def get_expected_mean_noise(exposure):
     # Directory containing the dark images
     directory = 'Data/Average/Noise/'
 
@@ -43,9 +46,6 @@ def get_expected_noise(exposure):
     # Estimate the expected noise for the given exposure time
     expected_noise = polynomial_function(exposure)
 
-    #interpolation_function = interp1d(exposure_times, noise_values, kind='linear', fill_value="extrapolate")
-    #expected_noise = interpolation_function(exposure)
-
     return expected_noise
 
 
@@ -61,7 +61,7 @@ def adjust_extreme_pixels(image, neighbor_threshold_factor=2):
         np.ndarray: The image with overexposed or underexposed pixels set to the local median.
     """
     # Compute the local median values using a median filter
-    local_median = median_filter(image, size=3)
+    local_median = median_filter(image, size=4)
     
     # Identify overexposed and underexposed pixels by comparing to local median values
     overexposed_mask = image > local_median * neighbor_threshold_factor
@@ -72,7 +72,10 @@ def adjust_extreme_pixels(image, neighbor_threshold_factor=2):
     
     return image
 
-def remove_noise(image, exposure, base_threshold=100, reference_exposure=100, neighbor_threshold_factor=2):
+
+
+
+def remove_noise(image, exposure, neighbor_threshold_factor=2):
     """
     Remove noise from an image by subtracting the dark image (noise) and ensuring no values fall below 0.
     Additionally, set pixels that are significantly higher or lower than their neighboring pixels to the local median.
@@ -80,20 +83,19 @@ def remove_noise(image, exposure, base_threshold=100, reference_exposure=100, ne
     Args:
         image (np.ndarray): The input image from which noise is to be removed.
         exposure (float): The exposure time used to capture the image.
-        base_threshold (float): The base mean value threshold for the reference exposure time.
-        reference_exposure (float): The reference exposure time in milliseconds for the base threshold.
         neighbor_threshold_factor (float): The factor by which a pixel must differ from the average of its neighbors to be considered overexposed or underexposed.
 
     Returns:
         np.ndarray: The denoised image with no values below 0 and overexposed or underexposed pixels set to the local median.
     """
     # Subtract the dark image (noise) from the input image
-    denoised_image = image - get_expected_noise(exposure)
+    denoised_image = image - get_expected_mean_noise(exposure)
     
     # Ensure no values fall below 0
     denoised_image = np.maximum(denoised_image, 0)
     
     # Adjust overexposed and underexposed pixels
     denoised_image = adjust_extreme_pixels(denoised_image, neighbor_threshold_factor)
-    
+
+
     return denoised_image

@@ -2,14 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=(366, 766)):
+from src import *
+
+def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None):
     """
     Plot the spectrogram with the visible spectrum on the wavelength axis, limited to a specific pixel height range.
 
     Args:
         spectrogram (np.ndarray): The spectrogram data.
         wavelengths (np.ndarray): The calibrated wavelengths.
-        pixel_range (tuple): The range of pixel heights to plot (start, end).
+        pixel_range (tuple, optional): The range of pixel heights to plot (start, end). If None, the full range is used.
     """
     # Create the visible spectrum colormap
     colors = [
@@ -26,15 +28,20 @@ def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=(366, 766))
     # Create the colormap
     visible_spectrum_cmap = LinearSegmentedColormap.from_list('visible_spectrum', colors, N=256)
     
+    # Determine the pixel range
+    if pixel_range is None:
+        start_pixel, end_pixel = 0, spectrogram.shape[0]
+    else:
+        start_pixel, end_pixel = pixel_range
+    
     # Slice the spectrogram to the specified pixel range
-    start_pixel, end_pixel = pixel_range
     spectrogram_slice = spectrogram[start_pixel:end_pixel, :]
     
     # Plot the spectrogram with grayscale intensity
     plt.figure(figsize=(20, 14))
     extent = [wavelengths.min(), wavelengths.max(), start_pixel, end_pixel]
     plt.imshow(spectrogram_slice, cmap='gray', aspect='auto', extent=extent)
-    plt.colorbar(label=r'Intensity [$\frac{mW}{m^2 nm}$]')
+    plt.colorbar(label=r'Intensity [$\frac{mW}{m^2 nm}$ or Counts]')
     
     # Create a secondary x-axis with the visible spectrum colormap
     ax = plt.gca()
