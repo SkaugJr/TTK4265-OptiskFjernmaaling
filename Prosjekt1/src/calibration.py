@@ -4,7 +4,7 @@ from scipy.interpolate import interp1d
 from scipy.ndimage import gaussian_filter1d
 
 
-def pix_to_wavelength(spectrogram, csv_file='../Data/Calibrated/calibrated_wavelengths.csv', wavelength_min=None, wavelength_max=None):
+def pix_to_wavelength(spectrogram, csv_file='Data/Calibrated/calibrated_wavelengths.csv', wavelength_min=None, wavelength_max=None):
     """
     Crop the spectrogram to a specific wavelength range.
 
@@ -33,8 +33,8 @@ def pix_to_wavelength(spectrogram, csv_file='../Data/Calibrated/calibrated_wavel
 
 def expected_irradiance(wavelengths):
     #Certificate data
-    W_L = np.loadtxt('../Data/Calibrated/calibrationCertificate200W.txt', usecols=0) # Wavelengths in nm
-    B_0 = np.loadtxt('../Data/Calibrated/calibrationCertificate200W.txt', usecols=1) # Irradiance in mW/m^2/nm
+    W_L = np.loadtxt('Data/Calibrated/calibrationCertificate200W.txt', usecols=0) # Wavelengths in nm
+    B_0 = np.loadtxt('Data/Calibrated/calibrationCertificate200W.txt', usecols=1) # Irradiance in mW/m^2/nm
     # sigma = np.loadtxt('../Data/Calibrated/calibrationCertificate200W.txt', usecols=2) # Uncertainty in %
 
     R = 0.92
@@ -56,7 +56,7 @@ def scaling_factor(exposure_time_ms):
         exposure_time_ms (float): The exposure time in milliseconds.
     """
     # Load the scaling factor calibrated for 1 ms exposure time
-    scaling_factor = np.loadtxt('../Data/Calibrated/Scaling_Factor.txt', delimiter=",") # Scaling factor in mW/m^2/nm/count
+    scaling_factor = np.loadtxt('Data/Calibrated/Scaling_Factor.txt', delimiter=",") # Scaling factor in mW/m^2/nm/count
 
     # Adjust the scaling factor for the given exposure time
     adjusted_scaling_factor = scaling_factor  / exposure_time_ms 

@@ -5,7 +5,7 @@ from scipy.ndimage import median_filter
 
 def get_expected_noise(exposure):
     # Directory containing the dark images
-    directory = '../Data/Average/Noise/'
+    directory = 'Data/Average/Noise/'
 
     # Initialize lists to store exposure times and noise values
     exposure_times = []
