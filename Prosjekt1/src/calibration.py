@@ -35,7 +35,7 @@ def expected_irradiance(wavelengths):
     #Certificate data
     W_L = np.loadtxt('Data/Calibrated/calibrationCertificate200W.txt', usecols=0) # Wavelengths in nm
     B_0 = np.loadtxt('Data/Calibrated/calibrationCertificate200W.txt', usecols=1) # Irradiance in mW/m^2/nm
-    # sigma = np.loadtxt('../Data/Calibrated/calibrationCertificate200W.txt', usecols=2) # Uncertainty in %
+    # sigma = np.loadtxt('Data/Calibrated/calibrationCertificate200W.txt', usecols=2) # Uncertainty in %
 
     R = 0.92
     r_0 = 0.5 # from source to lambertian surface
