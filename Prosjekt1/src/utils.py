@@ -1,6 +1,6 @@
 import numpy as np
 
-def read_bip_file(file_path, width, height):
+def read_bip_file(file_path, width=1936, height=1216):
     with open(file_path, 'rb') as file:
         data = file.read()
     
@@ -16,6 +16,28 @@ def read_bip_file(file_path, width, height):
         pixel_data[i] = (raw_data[byte_index] << 8) | raw_data[byte_index + 1]
     
     # Reshape array til 2D bilde
+    image = pixel_data.reshape((height, width))
+    return image
+
+def read_bip_file_8bit(file_path, width=1936, height=1216):
+    """
+    Read a .bip file with 8-bit values and return the image data as a numpy array.
+
+    Args:
+        file_path (str): The path to the .bip file.
+        width (int, optional): The width of the image. Defaults to 1936.
+        height (int, optional): The height of the image. Defaults to 1216.
+
+    Returns:
+        np.ndarray: The image data.
+    """
+    with open(file_path, 'rb') as file:
+        data = file.read()
+    
+    # Convert binary data to numpy array with 8-bit unsigned integers
+    pixel_data = np.frombuffer(data, dtype=np.uint)
+    
+    # Reshape array to 2D image
     image = pixel_data.reshape((height, width))
     return image
 

@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
+import re
 
 from src import *
 
@@ -153,3 +154,27 @@ def full_calibration(image, exposure_time_ms):
     calibrated_spectrogram = counts_to_irradiance(cropped_spectrogram, exposure_time_ms)
 
     return calibrated_spectrogram, cropped_wavelengths
+
+def bip_to_full_calibration(filepath):
+    """
+    Perform full calibration of the spectrogram.
+
+    Args:
+        image (np.ndarray): The spectrogram data.
+        exposure_time_ms (float): The exposure time in milliseconds.
+
+    Returns:
+        np.ndarray: The calibrated spectrogram data.
+    """
+    match = re.search(r'_e(\d+\.\d+)_', filepath)
+    if match:
+        exposure_time = float(match.group(1))
+    else:
+        raise ValueError("Exposure time not found in filename")
+    image = utils.read_bip_file(filepath)
+
+    spec, wave = full_calibration(image, exposure_time)
+
+    visualization.plot_visible_spectrum_cmap(spec, wave)
+
+    return spec, wave

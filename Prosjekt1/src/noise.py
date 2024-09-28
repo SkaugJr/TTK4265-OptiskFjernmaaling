@@ -2,7 +2,6 @@ import os
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.ndimage import median_filter
-from scipy.ndimage import mean_filter
 
 from src import *
 
