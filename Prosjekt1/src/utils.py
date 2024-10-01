@@ -1,8 +1,7 @@
 import numpy as np
-import scipy as sp
-from typing import List, Tuple
-
-from src import *
+import scipy.signal as signal
+import pandas as pd
+from typing import Tuple, List
 
 def read_bip_file(file_path, width=1936, height=1216):
     with open(file_path, 'rb') as file:
@@ -73,64 +72,51 @@ def theoretical_fwhm(order=1,slit_width = (25e-6), focal_length = (30e-3), groov
     fwhm = (groove_spacing * np.cos(alpha))/(order * focal_length) * slit_width
     return fwhm
 
-
-def calc_fwhm(spectra: List[np.ndarray], wavelengths: List[np.ndarray], lines: List[int]) -> Tuple[List[List[float]], List[int]]:
+def find_peaks_and_fwhm(wavelengths: np.ndarray, intensities: np.ndarray) -> Tuple[List[float], List[float]]:
     """
-    Calculate the full width at half maximum (FWHM) for each peak in the given lines of the spectra.
+    Locate all peaks and find the FWHM values at these peaks.
     
     Parameters:
-    - spectra (list): A list of numpy arrays representing the calibrated spectra.
-    - wavelengths (list): A list of numpy arrays representing the corresponding wavelengths.
-    - lines (list): A list of line indices to calculate the FWHM.
+    - wavelengths (np.ndarray): Array of wavelength values.
+    - intensities (np.ndarray): Array of intensity values corresponding to the wavelengths.
     
     Returns:
-    - all_fwhm_list (list): A list of lists, where each inner list contains the FWHM values for each peak in a line.
-    - skip_list (list): A list of line indices that were skipped due to an incorrect number of peaks.
+    - peaks_wavelengths (list): List of wavelengths where peaks are located.
+    - fwhm_values (list): List of FWHM values for each peak.
     """
     
-    # Open data
-    all_fwhm_list: List[List[float]] = []
-    skip_list: List[int] = []
-    for line in lines:
-        peaks_width_nm: List[float] = []
-        for spectrum, wavelength in zip(spectra, wavelengths):
-            smooth_line = spectrum[line]  # Consider smoothing the line.
-        
-            # Detect position of peaks
-            max_val = max(smooth_line)
-            peak_height = 0.1 * max_val  # Minimum value of peak
-            distance = 18  # Minimum distance between peaks
-            peaks_pos, peaks_height_dict = sp.signal.find_peaks(smooth_line, height=peak_height, distance=distance)    
-            peaks_height = peaks_height_dict['peak_heights']
-            
-            # Find width at half maximum           
-            results_half = sp.signal.peak_widths(smooth_line, peaks_pos, rel_height=0.5)  # At half maximum
-            peaks_width = results_half[0]
-            
-            # Convert width from pixel to nm
-            num_peaks = len(peaks_height)
-            for peak in range(num_peaks):
-                
-                # Find wavelength pos of half width on each side
-                half_width = peaks_width[peak] / 2
-                min_w_pos = int(peaks_pos[peak] - half_width)
-                max_w_pos = int(peaks_pos[peak] + half_width)
-                
-                # Ensure indices are within bounds
-                min_w_pos = max(min_w_pos, 0)
-                max_w_pos = min(max_w_pos, len(wavelength) - 1)
-                
-                # Convert half width pos to nm 
-                min_w = wavelength[min_w_pos]
-                max_w = wavelength[max_w_pos]
-                
-                # Width in nm
-                width_nm = max_w - min_w
-                peaks_width_nm.append(float(width_nm))
-            
-        if len(peaks_width_nm) == 15:  # Change if needed
-            all_fwhm_list.append(peaks_width_nm)
-        else:
-            skip_list.append(line)
+    # Detect peaks
+    peaks_indices, _ = signal.find_peaks(intensities, height=0.1*max(intensities), distance=10)
     
-    return all_fwhm_list, skip_list
+    # Find FWHM for each peak
+    results_half = signal.peak_widths(intensities, peaks_indices, rel_height=0.5)
+    fwhm_pixel_widths = results_half[0]
+    
+    # Convert pixel widths to wavelength widths
+    fwhm_values = []
+    peaks_wavelengths = []
+    for i, peak_index in enumerate(peaks_indices):
+        half_width = fwhm_pixel_widths[i] / 2
+        min_w_pos = int(peak_index - half_width)
+        max_w_pos = int(peak_index + half_width)
+        
+        # Ensure indices are within bounds
+        min_w_pos = max(min_w_pos, 0)
+        max_w_pos = min(max_w_pos, len(wavelengths) - 1)
+        
+        # Calculate FWHM in wavelength units
+        fwhm = wavelengths[max_w_pos] - wavelengths[min_w_pos]
+        fwhm_values.append(fwhm)
+        peaks_wavelengths.append(wavelengths[peak_index])
+    
+    return peaks_wavelengths, fwhm_values
+
+# Example usage
+wavelengths = np.linspace(400, 700, 1000)  # Example wavelength range from 400 nm to 700 nm
+intensities = np.sin(wavelengths / 50) ** 2 + np.random.normal(0, 0.1, wavelengths.size)  # Example intensity values
+
+peaks_wavelengths, fwhm_values = find_peaks_and_fwhm(wavelengths, intensities)
+
+# Create a DataFrame to display the peaks and their FWHM values
+fwhm_df = pd.DataFrame(list(zip(peaks_wavelengths, fwhm_values)), columns=['Peak Wavelength [nm]', 'FWHM [nm]'])
+print(fwhm_df)

@@ -92,8 +92,13 @@ def remove_noise(image, exposure, neighbor_threshold_factor=2):
     Returns:
         np.ndarray: The denoised image with no values below 0 and overexposed or underexposed pixels set to the local median.
     """
-    # Subtract the dark image (noise) from the input image
-    denoised_image = image - dark_image_noise(exposure)
+    try:
+        # Try to subtract the dark image noise
+        denoised_image = image - dark_image_noise(exposure)
+    except Exception as e:
+        print(f"Error occurred: {e}. Using expected mean noise instead.")
+        # If an error occurs, use the expected mean noise
+        denoised_image = image - get_expected_mean_noise(exposure)
     
     # Ensure no values fall below 0
     denoised_image = np.maximum(denoised_image, 0)

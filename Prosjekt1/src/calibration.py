@@ -112,7 +112,7 @@ def scaling_factor(exposure_time_ms):
     scaling_factor = np.loadtxt('Data/Calibrated/Scaling_Factor.txt', delimiter=",") # Scaling factor in mW/m^2/nm/count
 
     # Adjust the scaling factor for the given exposure time
-    adjusted_scaling_factor = scaling_factor  / exposure_time_ms 
+    adjusted_scaling_factor = scaling_factor  / (exposure_time_ms) * 1000 
 
     return adjusted_scaling_factor
 
