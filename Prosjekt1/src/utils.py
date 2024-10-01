@@ -78,3 +78,56 @@ def find_consecutive_range_means(arr):
     means.append(np.mean(current_range))
     
     return means
+
+def calculate_rms(actual, predicted):
+    return np.sqrt(np.mean((np.array(actual) - np.array(predicted)) ** 2))
+
+def theoretical_fwhm(slit_width = (25e-6), focal_length = (16e-3), groove_spacing = (1 / (600 * 1e3)), order=1, lin_coeff=1, alpha = 0):
+    """
+    Compute the theoretical FWHM using the slit width, the grating groove spacing,
+    and the focal length of the middle objective.
+
+    Parameters:
+    slit_width (float): Slit width in meters.
+    focal_length (float): Focal length of the middle objective in meters.
+    groove_spacing (float): Grating groove spacing in meters.
+
+    Returns:
+    float: Theoretical FWHM in meters.
+    """
+    alpha = 0 # Angle of incidence to grating
+
+    # fwhm = (slit_width * focal_length) / (order * groove_spacing)
+    fwhm = (lin_coeff * np.cos(alpha))/(order * focal_length) * slit_width
+    return fwhm
+
+def calculate_fwhm(wavelengths, intensities):
+    """
+    Calculate the full width at half maximum (FWHM) of a peak.
+
+    Parameters:
+    - wavelengths: numpy array of wavelengths.
+    - intensities: numpy array of intensities.
+
+    Returns:
+    - fwhm: float, the full width at half maximum.
+    """
+    # Find the maximum intensity and its index
+    max_intensity = np.max(intensities)
+    max_index = np.argmax(intensities)
+
+    # Find the half maximum intensity
+    half_max_intensity = max_intensity / 2
+
+    # Find the indices of the intensities closest to the half maximum intensity
+    left_index = np.argmin(np.abs(intensities[:max_index] - half_max_intensity))
+    right_index = np.argmin(np.abs(intensities[max_index:] - half_max_intensity)) + max_index
+
+    # Find the wavelengths at the half maximum intensities
+    left_wavelength = wavelengths[left_index]
+    right_wavelength = wavelengths[right_index]
+
+    # Calculate the FWHM
+    fwhm = right_wavelength - left_wavelength
+
+    return fwhm

@@ -145,7 +145,7 @@ def full_calibration(image, exposure_time_ms):
         np.ndarray: The calibrated spectrogram data.
     """
 
-    image = noise.remove_noise(image, exposure_time_ms)
+    image = noiseFuncs.remove_noise(image, exposure_time_ms)
 
     # Crop the spectrogram to a specific wavelength range
     cropped_spectrogram, cropped_wavelengths = pix_to_wavelength(image)

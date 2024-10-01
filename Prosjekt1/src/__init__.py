@@ -1,4 +1,4 @@
 from . import calibration
-from . import noise
+from . import noiseFuncs
 from . import utils
 from . import visualization
