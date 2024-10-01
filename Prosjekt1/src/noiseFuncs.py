@@ -47,6 +47,11 @@ def get_expected_mean_noise(exposure):
 
     return expected_noise
 
+def dark_image_noise(exposure):
+    directory = 'Data/Average/Noise/'
+    file = 'Dark_Image_E' + str(exposure) + '_avg.txt'
+    im = np.loadtxt(directory + file, delimiter=',')
+    return im
 
 def adjust_extreme_pixels(image, neighbor_threshold_factor=2):
     """
@@ -88,7 +93,7 @@ def remove_noise(image, exposure, neighbor_threshold_factor=2):
         np.ndarray: The denoised image with no values below 0 and overexposed or underexposed pixels set to the local median.
     """
     # Subtract the dark image (noise) from the input image
-    denoised_image = image - get_expected_mean_noise(exposure)
+    denoised_image = image - dark_image_noise(exposure)
     
     # Ensure no values fall below 0
     denoised_image = np.maximum(denoised_image, 0)

@@ -1,4 +1,8 @@
 import numpy as np
+import scipy as sp
+from typing import List, Tuple
+
+from src import *
 
 def read_bip_file(file_path, width=1936, height=1216):
     with open(file_path, 'rb') as file:
@@ -18,7 +22,7 @@ def calculate_average_image(file_paths, output_path, width=1936, height=1216):
     images = [read_bip_file(file_path, width, height) for file_path in file_paths]
     average_image = np.mean(images, axis=0)
 
-    image_data = average_image
+    image_data = np.ceil(average_image).astype(int)
     
     np.savetxt(output_path, image_data, delimiter=',', fmt='%d')
 
@@ -52,10 +56,10 @@ def find_consecutive_range_means(arr):
 def calculate_rms(actual, predicted):
     return np.sqrt(np.mean((np.array(actual) - np.array(predicted)) ** 2))
 
-def theoretical_fwhm(slit_width = (25e-6), focal_length = (16e-3), groove_spacing = (1 / (600 * 1e3)), order=1, lin_coeff=1, alpha = 0):
+def theoretical_fwhm(order=1,slit_width = (25e-6), focal_length = (30e-3), groove_spacing = (1 / (600 * 1e3)), alpha = 0):
     """
     Compute the theoretical FWHM using the slit width, the grating groove spacing,
-    and the focal length of the middle objective.
+    and the focal length of the collimator lens
 
     Parameters:
     slit_width (float): Slit width in meters.
@@ -65,39 +69,68 @@ def theoretical_fwhm(slit_width = (25e-6), focal_length = (16e-3), groove_spacin
     Returns:
     float: Theoretical FWHM in meters.
     """
-    alpha = 0 # Angle of incidence to grating
-
-    # fwhm = (slit_width * focal_length) / (order * groove_spacing)
-    fwhm = (lin_coeff * np.cos(alpha))/(order * focal_length) * slit_width
+    
+    fwhm = (groove_spacing * np.cos(alpha))/(order * focal_length) * slit_width
     return fwhm
 
-def calculate_fwhm(wavelengths, intensities):
-    """
-    Calculate the full width at half maximum (FWHM) of a peak.
 
+def calc_fwhm(spectra: List[np.ndarray], wavelengths: List[np.ndarray], lines: List[int]) -> Tuple[List[List[float]], List[int]]:
+    """
+    Calculate the full width at half maximum (FWHM) for each peak in the given lines of the spectra.
+    
     Parameters:
-    - wavelengths: numpy array of wavelengths.
-    - intensities: numpy array of intensities.
-
+    - spectra (list): A list of numpy arrays representing the calibrated spectra.
+    - wavelengths (list): A list of numpy arrays representing the corresponding wavelengths.
+    - lines (list): A list of line indices to calculate the FWHM.
+    
     Returns:
-    - fwhm: float, the full width at half maximum.
+    - all_fwhm_list (list): A list of lists, where each inner list contains the FWHM values for each peak in a line.
+    - skip_list (list): A list of line indices that were skipped due to an incorrect number of peaks.
     """
-    # Find the maximum intensity and its index
-    max_intensity = np.max(intensities)
-    max_index = np.argmax(intensities)
-
-    # Find the half maximum intensity
-    half_max_intensity = max_intensity / 2
-
-    # Find the indices of the intensities closest to the half maximum intensity
-    left_index = np.argmin(np.abs(intensities[:max_index] - half_max_intensity))
-    right_index = np.argmin(np.abs(intensities[max_index:] - half_max_intensity)) + max_index
-
-    # Find the wavelengths at the half maximum intensities
-    left_wavelength = wavelengths[left_index]
-    right_wavelength = wavelengths[right_index]
-
-    # Calculate the FWHM
-    fwhm = right_wavelength - left_wavelength
-
-    return fwhm
+    
+    # Open data
+    all_fwhm_list: List[List[float]] = []
+    skip_list: List[int] = []
+    for line in lines:
+        peaks_width_nm: List[float] = []
+        for spectrum, wavelength in zip(spectra, wavelengths):
+            smooth_line = spectrum[line]  # Consider smoothing the line.
+        
+            # Detect position of peaks
+            max_val = max(smooth_line)
+            peak_height = 0.1 * max_val  # Minimum value of peak
+            distance = 18  # Minimum distance between peaks
+            peaks_pos, peaks_height_dict = sp.signal.find_peaks(smooth_line, height=peak_height, distance=distance)    
+            peaks_height = peaks_height_dict['peak_heights']
+            
+            # Find width at half maximum           
+            results_half = sp.signal.peak_widths(smooth_line, peaks_pos, rel_height=0.5)  # At half maximum
+            peaks_width = results_half[0]
+            
+            # Convert width from pixel to nm
+            num_peaks = len(peaks_height)
+            for peak in range(num_peaks):
+                
+                # Find wavelength pos of half width on each side
+                half_width = peaks_width[peak] / 2
+                min_w_pos = int(peaks_pos[peak] - half_width)
+                max_w_pos = int(peaks_pos[peak] + half_width)
+                
+                # Ensure indices are within bounds
+                min_w_pos = max(min_w_pos, 0)
+                max_w_pos = min(max_w_pos, len(wavelength) - 1)
+                
+                # Convert half width pos to nm 
+                min_w = wavelength[min_w_pos]
+                max_w = wavelength[max_w_pos]
+                
+                # Width in nm
+                width_nm = max_w - min_w
+                peaks_width_nm.append(float(width_nm))
+            
+        if len(peaks_width_nm) == 15:  # Change if needed
+            all_fwhm_list.append(peaks_width_nm)
+        else:
+            skip_list.append(line)
+    
+    return all_fwhm_list, skip_list
