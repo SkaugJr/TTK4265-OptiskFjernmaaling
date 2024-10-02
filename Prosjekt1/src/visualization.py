@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
+
 from src import *
 
 def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None):
