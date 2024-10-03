@@ -110,13 +110,3 @@ def find_peaks_and_fwhm(wavelengths: np.ndarray, intensities: np.ndarray) -> Tup
         peaks_wavelengths.append(wavelengths[peak_index])
     
     return peaks_wavelengths, fwhm_values
-
-# Example usage
-wavelengths = np.linspace(400, 700, 1000)  # Example wavelength range from 400 nm to 700 nm
-intensities = np.sin(wavelengths / 50) ** 2 + np.random.normal(0, 0.1, wavelengths.size)  # Example intensity values
-
-peaks_wavelengths, fwhm_values = find_peaks_and_fwhm(wavelengths, intensities)
-
-# Create a DataFrame to display the peaks and their FWHM values
-fwhm_df = pd.DataFrame(list(zip(peaks_wavelengths, fwhm_values)), columns=['Peak Wavelength [nm]', 'FWHM [nm]'])
-print(fwhm_df)
