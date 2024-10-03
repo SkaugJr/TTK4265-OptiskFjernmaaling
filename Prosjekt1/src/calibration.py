@@ -4,7 +4,6 @@ from scipy.interpolate import interp1d
 import re
 
 from src import *
-from noiseFuncs import *
 
 def calibrate_wavelengths(ImageWidth, Spectral_lines, Pixel_positions, Degree, Output_file):
     """
