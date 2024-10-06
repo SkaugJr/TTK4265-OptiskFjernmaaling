@@ -21,9 +21,8 @@ def calculate_average_image(file_paths, output_path, width=1936, height=1216):
     images = [read_bip_file(file_path, width, height) for file_path in file_paths]
     average_image = np.mean(images, axis=0)
 
-    image_data = np.ceil(average_image).astype(int)
     
-    np.savetxt(output_path, image_data, delimiter=',', fmt='%d')
+    np.savetxt(output_path, average_image, delimiter=',', fmt='%d')
 
 
 def find_consecutive_range_means(arr):

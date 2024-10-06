@@ -34,11 +34,17 @@ def get_expected_mean_noise(exposure):
     exposure_times = np.array(exposure_times)
     noise_values = np.array(noise_values)
 
+    # Exclude exposure times of 300 ms and 450 ms
+    exclude_indices = np.where((exposure_times == 300) | (exposure_times == 450))[0]
+    exposure_times = np.delete(exposure_times, exclude_indices)
+    noise_values = np.delete(noise_values, exclude_indices)
+
     # Sort the data by exposure times
     sorted_indices = np.argsort(exposure_times)
     exposure_times = exposure_times[sorted_indices]
     noise_values = noise_values[sorted_indices]
 
+    # Fit a second-order polynomial to the data
     polynomial_coefficients = np.polyfit(exposure_times, noise_values, 2)
     polynomial_function = np.poly1d(polynomial_coefficients)
     
