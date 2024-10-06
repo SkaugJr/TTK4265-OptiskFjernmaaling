@@ -55,7 +55,7 @@ def get_expected_mean_noise(exposure):
 
 def dark_image_noise(exposure):
     directory = 'Data/Average/Noise/'
-    file = 'Dark_Image_E' + str(exposure) + '_avg.txt'
+    file = 'Dark_Image_E' + str(round(exposure)) + '_avg.txt'
     im = np.loadtxt(directory + file, delimiter=',')
     return im
 
