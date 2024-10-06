@@ -40,7 +40,7 @@ def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None):
     
     # Plot the spectrogram with grayscale intensity
     plt.figure(figsize=(20, 14))
-    extent = [wavelengths.min(), wavelengths.max(), start_pixel, end_pixel]
+    extent = [wavelengths.min(), wavelengths.max(), end_pixel, start_pixel]
     plt.imshow(spectrogram_slice, cmap='gray', aspect='auto', extent=extent)
     plt.colorbar(label=r'Intensity [$\frac{mW}{m^2 nm}$ or Counts]')
     
