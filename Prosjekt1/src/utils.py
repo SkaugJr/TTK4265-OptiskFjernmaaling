@@ -22,7 +22,7 @@ def calculate_average_image(file_paths, output_path, width=1936, height=1216):
     average_image = np.mean(images, axis=0)
 
     
-    np.savetxt(output_path, average_image, delimiter=',', fmt='%d')
+    np.savetxt(output_path, average_image, delimiter=',', fmt='%f')
 
 
 def find_consecutive_range_means(arr):
