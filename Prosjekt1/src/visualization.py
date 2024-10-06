@@ -5,7 +5,7 @@ from matplotlib.colors import LinearSegmentedColormap
 
 from src import *
 
-def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None):
+def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None, title=None):
     """
     Plot the spectrogram with the visible spectrum on the wavelength axis, limited to a specific pixel height range.
 
@@ -49,9 +49,9 @@ def plot_visible_spectrum_cmap(spectrogram, wavelengths, pixel_range=None):
     cbar = plt.colorbar(plt.cm.ScalarMappable(cmap=visible_spectrum_cmap), ax=ax, orientation='horizontal', pad=0.05)
     cbar.set_ticks([])
 
-    plt.xlabel('Wavelength (nm)')
+    plt.xlabel('Wavelength [nm]')
     plt.xticks(np.arange(400, 801, 20))
-    plt.ylabel('Pixel Position')
+    plt.ylabel('Romlig Akse [px]')
     plt.yticks(np.arange(start_pixel, end_pixel, 50))
-    plt.title('Calibrated Spectrogram with Visible Spectrum')
+    plt.title(title)
     plt.show()
