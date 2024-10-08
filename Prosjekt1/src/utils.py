@@ -25,6 +25,17 @@ def calculate_average_image(file_paths, output_path, width=1936, height=1216):
     np.savetxt(output_path, average_image, delimiter=',', fmt='%f')
 
 
+def calculate_median_image(file_paths, output_path, width=1936, height=1216):
+    """
+    Calculates the average image from a list of .bip file paths.
+    """
+    images = [read_bip_file(file_path, width, height) for file_path in file_paths]
+    median_image = np.median(images, axis=0)
+
+    
+    np.savetxt(output_path, median_image, delimiter=',', fmt='%f')
+
+
 def find_consecutive_range_means(arr):
     """
     Finds the mean of consecutive ranges in an array of integers.
