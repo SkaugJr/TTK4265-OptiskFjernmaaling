@@ -1,0 +1,26 @@
+# Atmosphere and solar settings
+atmosphere_file ../data/atmmod/afglus.dat
+source solar ../data/solar_flux/atlas_plus_modtran
+mol_modify O3 300. DU
+day_of_year 170
+
+# Surface and geometry
+albedo 0.1
+sza 52.0
+phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
+umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
+
+# Altitude
+altitude 0 # Ground simulation
+
+# Radiative transfer settings
+rte_solver disort
+number_of_streams 6  
+
+# Wavelength and spectral settings
+wavelength 400.0 800.0
+slit_function_file ../examples/TRI_SLIT.DAT
+spline 400 800 1
+
+# Output settings
+quiet 
