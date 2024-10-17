@@ -1,13 +1,27 @@
-# Atmosfærisk modell
+# Define the atmosphere
 atmosphere_file ../data/atmmod/afglus.dat
 
-# Solinnstråling
+# Define the solar spectrum
 source solar ../data/solar_flux/kurudz_1.0nm.dat
 
-# Utdataformat
-output_user lambda edir
+# Define the geometry
+sza 30.0  # Solar zenith angle in degrees
+phi0 0.0  # Solar azimuth angle in degrees
 
-# Andre parametere
+altitude 100
+
+# Define the wavelength range
+wavelength 291 799.0  # Adjusted wavelength range in nm
+
+# Define the radiative transfer solver
 rte_solver disort
-wavelength 300 2500
-sza 0
+
+# Define the number of streams
+number_of_streams 8
+
+# Define the aerosol properties
+aerosol_default
+
+
+albedo_file ../data/albedo/gras.dat
+
