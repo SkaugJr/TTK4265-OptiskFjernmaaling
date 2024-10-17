@@ -1,26 +1,13 @@
-# Atmosphere and solar settings
+# Atmosfærisk modell
 atmosphere_file ../data/atmmod/afglus.dat
-source solar ../data/solar_flux/atlas_plus_modtran
-mol_modify O3 300. DU
-day_of_year 170
 
-# Surface and geometry
-albedo 0.1
-sza 52.0
-phi 0 30 60 90    # Optional: Nadir view (straight down) Standard val = 0
-umu 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
+# Solinnstråling
+source solar ../data/solar_flux/kurudz_1.0nm.dat
 
-# Altitude
-altitude 0.120 
+# Utdataformat
+output_user lambda edir
 
-# Radiative transfer settings
+# Andre parametere
 rte_solver disort
-number_of_streams 6  
-
-# Wavelength and spectral settings
-wavelength 400.0 800.0
-slit_function_file ../examples/TRI_SLIT.DAT
-spline 400 800 1
-
-# Output settings
-quiet 
+wavelength 300 2500
+sza 0
