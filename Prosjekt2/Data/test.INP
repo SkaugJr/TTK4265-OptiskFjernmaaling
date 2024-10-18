@@ -1,27 +1,16 @@
-# Define the atmosphere
+# libradtran input file for cirrus
 atmosphere_file ../data/atmmod/afglus.dat
-
-# Define the solar spectrum
 source solar ../data/solar_flux/kurudz_1.0nm.dat
-
-# Define the geometry
-sza 30.0  # Solar zenith angle in degrees
-phi0 0.0  # Solar azimuth angle in degrees
-
-altitude 100
-
-# Define the wavelength range
-wavelength 291 799.0  # Adjusted wavelength range in nm
-
-# Define the radiative transfer solver
 rte_solver disort
 
-# Define the number of streams
-number_of_streams 8
 
-# Define the aerosol properties
+wavelength 250 3000
+sza 0
+
+
+# Aerosol settings
 aerosol_default
-
-
-albedo_file ../data/albedo/gras.dat
-
+aerosol_visibility 23.0  # Visibility in km
+aerosol_season 1         # Season (1: Spring/Summer, 2:  Fall/Winter)
+aerosol_haze 4           # Haze (1: Rural, 4: Maritime, 5: Urban, 6: Tropospheric)
+aerosol_vulcan 4         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extreme)
