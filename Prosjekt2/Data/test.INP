@@ -1,16 +1,10 @@
-# libradtran input file for cirrus
-atmosphere_file ../data/atmmod/afglus.dat
-source solar ../data/solar_flux/kurudz_1.0nm.dat
-rte_solver disort
+# input_aerosol.inp
+atmosphere_file ../data/atmmod/afglus.dat   # Bruk US standard atmosfære
+wavelength 550                             # Spesifiser bølgelengde i nm
+aerosol_default                            # Bruk standard aerosolmodell
+
+# Solar geometri
+sza 0                                      # Sol-zenith vinkel (for enkelhets skyld 0)
+phi0 0                                     # Asimutal vinkel
 
 
-wavelength 250 3000
-sza 0
-
-
-# Aerosol settings
-aerosol_default
-aerosol_visibility 23.0  # Visibility in km
-aerosol_season 1         # Season (1: Spring/Summer, 2:  Fall/Winter)
-aerosol_haze 4           # Haze (1: Rural, 4: Maritime, 5: Urban, 6: Tropospheric)
-aerosol_vulcan 4         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extreme)
