@@ -9,7 +9,7 @@ aerosol_default
 aerosol_visibility 23.0  # Visibility in km
 aerosol_season 1         # Season (1: Spring/Summer, 2:  Fall/Winter)
 aerosol_haze 4           # Haze (1: Rural, 4: Maritime, 5: Urban, 6: Tropospheric)
-# aerosol_vulcan 1         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extreme) 
+aerosol_vulcan 2         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extreme) 
 
 # Surface and geometry
 albedo_file ../data/albedo/gras.dat
