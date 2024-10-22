@@ -18,7 +18,8 @@ sza 52.0     # solar zenith angle
 #umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-altitude 0.120 # Drone simulation
+#altitude 0.120 # Drone simulation
+zout 0.12
 
 # Radiative transfer settings
 rte_solver disort

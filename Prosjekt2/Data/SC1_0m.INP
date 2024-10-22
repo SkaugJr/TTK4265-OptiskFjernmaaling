@@ -11,7 +11,8 @@ sza 52.0
 # umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-altitude 0 # Ground simulation
+#altitude 0 # Ground simulation
+zout 0
 
 # Radiative transfer settings
 rte_solver disort

@@ -11,7 +11,8 @@ phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
 umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-altitude 100  # Satellite simulation (100 km above ground)
+#altitude 100  # Satellite simulation (100 km above ground)
+zout TOA
 
 # Radiative transfer settings
 rte_solver disort

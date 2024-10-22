@@ -11,8 +11,7 @@ sza 52.0
 # umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-zout 0 0.12 TOA
-zout_interpolate
+zout TOA
 
 # Radiative transfer settings
 rte_solver mystic

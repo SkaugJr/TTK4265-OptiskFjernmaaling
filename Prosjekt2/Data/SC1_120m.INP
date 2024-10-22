@@ -11,7 +11,8 @@ sza 52.0
 # umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-altitude 0.120  # Drone simulation (120 meters above ground) 
+#altitude 0.120  # Drone simulation (120 meters above ground) 
+zout 0.12
 
 # Radiative transfer settings
 rte_solver disort
