@@ -15,7 +15,7 @@ aerosol_haze 4           # Haze (1: Rural, 4: Maritime, 5: Urban, 6: Tropospheri
 albedo 0.1
 sza 52.0     # solar zenith angle
 #phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
-#umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
+#umu 1  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
 #altitude 0.120 # Drone simulation

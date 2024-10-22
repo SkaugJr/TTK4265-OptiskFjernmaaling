@@ -7,8 +7,8 @@ day_of_year 170
 # Surface and geometry
 albedo 0.1
 sza 52.0
-# phi 0    # Optional: Nadir view (straight down) Standard val = 0
-# umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
+phi 0    # Optional: Nadir view (straight down) Standard val = 0
+umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
 zout 0 0.12 TOA
@@ -21,6 +21,7 @@ bpdf_tsang_u10 2
 
 # Wavelength and spectral settings
 wavelength 400.0 800.0
+spline 400 800 1
 
 # Output settings
-#quiet
+quiet

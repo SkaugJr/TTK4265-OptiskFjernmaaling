@@ -7,6 +7,7 @@ day_of_year 170
 # Surface and geometry
 albedo 0.1
 sza 52.0
+phi0 180
 phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
 umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
