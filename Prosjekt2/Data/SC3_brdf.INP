@@ -12,11 +12,16 @@ aerosol_haze 4           # Haze (1: Rural, 4: Maritime, 5: Urban, 6: Tropospheri
 aerosol_vulcan 2         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extreme) 
 
 # Surface and geometry
-albedo_file ../data/albedo/gras.dat
+albedo 0.1
 sza 32.0
 phi0 180
 phi 0    # Optional: Nadir view (straight down) Standard val = 0
 umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
+
+# Wind
+brdf_cam u10 5.0     # Surface Wind at 10 m in m/s wind azimuth by default 0, if set to other azimuths you must use mystic solver (Monte carlo)
+brdf_cam pcl 0.01    # Pigment concentration in mg/m^3
+brdf_cam sal  34.3    # Salinity in 0/00 (per mille)
 
 # Altitude
 zout 0 0.12 TOA
@@ -27,9 +32,9 @@ rte_solver disort
 number_of_streams 6 
 
 # Wavelength and spectral settings
-wavelength 400.0 799.0
+wavelength 400.0 800.0
 slit_function_file ../examples/TRI_SLIT.DAT
-spline 400 799 1
+spline 400 800 1
 
 # Output settings
 output_user lambda edir edn eup uu

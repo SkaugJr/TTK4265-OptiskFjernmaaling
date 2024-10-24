@@ -20,7 +20,7 @@ umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
 zout 0 0.12 TOA
-zout_interpolate 
+#zout_interpolate 
 
 # Radiative transfer settings
 rte_solver disort

@@ -11,13 +11,18 @@ phi0 180
 phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
 umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
+# Wind
+brdf_cam u10 5.0     # Surface Wind at 10 m in m/s wind azimuth by default 0, if set to other azimuths you must use mystic solver (Monte carlo)
+brdf_cam pcl 0.01    # Pigment concentration in mg/m^3
+brdf_cam sal  34.3    # Salinity in 0/00 (per mille)
+
 # Altitude
 zout 0 0.12 TOA
 #zout_interpolate
 
 # Radiative transfer settings
 rte_solver disort
-number_of_streams 6  
+number_of_streams 16  
 
 # Wavelength and spectral settings
 wavelength 400.0 800.0
