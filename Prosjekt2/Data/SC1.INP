@@ -6,13 +6,14 @@ day_of_year 170
 
 # Surface and geometry
 albedo 0.1
-sza 52.0
-#phi 0    # Optional: Nadir view (straight down) Standard val = 0
-#umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
+sza 32.0
+phi0 180
+phi 0    # Optional: Nadir view (straight down) Standard val = 0
+umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
 
 # Altitude
-#altitude 0.120  # Drone simulation (120 meters above ground) 
-zout 0.12
+zout 0 0.12 TOA
+zout_interpolate 
 
 # Radiative transfer settings
 rte_solver disort
@@ -24,4 +25,5 @@ slit_function_file ../examples/TRI_SLIT.DAT
 spline 400 800 1
 
 # Output settings
+output_user lambda edir edn eup uu
 quiet
