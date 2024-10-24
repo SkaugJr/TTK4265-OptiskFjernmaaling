@@ -8,13 +8,13 @@ day_of_year 170
 albedo 0.1
 sza 32.0
 phi0 180
-phi 0 90    # Optional: Nadir view (straight down) Standard val = 0
-umu 0.7071  # Cosine of zenith angle (nadir view) Standard val = 1.0
+phi 0 90  
+umu 0.7071  
 
-# Wind
-brdf_cam u10 5.0     # Surface Wind at 10 m in m/s wind azimuth by default 0, if set to other azimuths you must use mystic solver (Monte carlo)
-brdf_cam pcl 0.01    # Pigment concentration in mg/m^3
-brdf_cam sal  34.3    # Salinity in 0/00 (per mille)
+# BRDF
+brdf_cam u10 5.0   
+brdf_cam pcl 0.01 
+brdf_cam sal  34.3  
 
 # Altitude
 zout 0 0.12 TOA

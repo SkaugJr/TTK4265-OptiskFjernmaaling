@@ -15,8 +15,8 @@ aerosol_vulcan 2         # Vulcan (1: Background, 2: Moderate, 3: High, 4: Extre
 albedo_file ../data/albedo/gras.dat
 sza 32.0
 phi0 180
-phi 0    # Optional: Nadir view (straight down) Standard val = 0
-umu 1.0  # Cosine of zenith angle (nadir view) Standard val = 1.0
+phi 0  
+umu 1.0 
 
 # Altitude
 zout 0 0.12 TOA
