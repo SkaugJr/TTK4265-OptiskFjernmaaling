@@ -1,5 +1,5 @@
 startTime = datetime(2024,03,20,0,0,0);
-stopTime = startTime + days(7);
+stopTime = startTime + days(7); % Øk til 30 dager for mere presis revisit-tid
 sampleTime = 60;        
 sc = satelliteScenario(startTime, stopTime, sampleTime);
 
@@ -19,7 +19,7 @@ fov600 = fieldOfView(cam600([cam600.Name] == "600 km Camera"));
 svalbard = groundStation(sc, 78.2298, 15.4078, "Name", "Svalbard");
 
 % Overvåkningsområde
-Oslo = groundStation(sc, 59.9139, 10.7522, "Name",  "Oslo");
+Oslo = groundStation(sc, 59.9139, 10.7522, "Name",  "Oslo","MinElevationAngle",45);
 
 pointAt(Sat400,Oslo);
 pointAt(Sat500,Oslo);
@@ -29,6 +29,7 @@ pointAt(Sat600,Oslo);
 access400 = access(Sat400, Oslo);
 access500 = access(Sat500, Oslo);
 access600 = access(Sat600, Oslo);
+
 
 % Kalkuler revisit-tid for hver satellitt
 fprintf('400 km satellitt:\n');
